@@ -1,0 +1,31 @@
+# Dependências
+node_modules/
+
+# Build
+dist/
+dist-ssr/
+
+# Ambiente (NUNCA sobe — tem dados sensíveis)
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Cache
+.cache/
+.parcel-cache/
