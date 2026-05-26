@@ -1,10 +1,12 @@
 import { NavLink } from 'react-router-dom'
-import { LayoutDashboard, FolderKanban, FileText } from 'lucide-react'
+import { LayoutDashboard, FolderKanban, FileText, DollarSign, Users } from 'lucide-react'
 
 const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/projetos', label: 'Projetos', icon: FolderKanban },
   { to: '/contratos', label: 'Contratos', icon: FileText },
+  { to: '/custos', label: 'Custos', icon: DollarSign },
+  { to: '/cadastro', label: 'Cadastro', icon: Users },
 ]
 
 export default function Sidebar() {
@@ -12,11 +14,12 @@ export default function Sidebar() {
     <aside className="w-[160px] min-h-screen bg-sidebar flex flex-col justify-between py-5 px-3 fixed left-0 top-0">
       {/* Logo */}
       <div>
-        <div className="flex items-center gap-2 px-2 mb-8">
-          <div className="w-7 h-7 rounded-md bg-primary flex items-center justify-center">
-            <span className="text-white text-xs font-bold">P</span>
-          </div>
-          <span className="text-white font-semibold text-sm tracking-wide">PRONET</span>
+        <div className="flex items-center justify-center px-2 mb-8">
+          <img
+            src="/pronet.png"
+            alt="Pronet"
+            className="h-10 w-auto object-contain"
+          />
         </div>
 
         {/* Nav */}

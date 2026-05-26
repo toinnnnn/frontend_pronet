@@ -4,6 +4,8 @@ import ProjetosPage from '@/pages/projetos/ProjetosPage'
 import ProjetoDetalhe from '@/pages/projetos/ProjetoDetalhe'
 import DashboardPage from '@/pages/DashboardPage'
 import ContratosPage from '@/pages/ContratosPage'
+import CustosPage from '@/pages/CustosPage'
+import CadastroPage from '@/pages/CadastroPage'
 
 export default function App() {
   return (
@@ -15,6 +17,8 @@ export default function App() {
           <Route path="/projetos" element={<ProjetosPage />} />
           <Route path="/projetos/:id" element={<ProjetoDetalhe />} />
           <Route path="/contratos" element={<ContratosPage />} />
+          <Route path="/custos" element={<CustosPage />} />
+          <Route path="/cadastro" element={<CadastroPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
