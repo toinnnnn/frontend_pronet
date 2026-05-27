@@ -37,39 +37,31 @@ export interface Projeto {
 // ─── Atividade ───────────────────────────────────────────────────────────────
 
 export interface Atividade {
-  id: string;
-  projetoId: string;
+  idProjeto: number;
   nome: string;
-  responsavel?: string;
-  dataInicio: string;
-  dataTermino: string;
-  hhPlanejado: number;
-  hhReal: number;
-  progresso: number; // 0-100
-  dependenciaId?: string | null;
-  materialPlanejado?: number;
-  materialReal?: number;
-  createdAt?: string;
+  descricao: string;
+  status: ProjetoStatus;
+  data_inicio: string;
+  data_fim: string;
 }
 
 export interface NovaAtividade {
+  idProjeto: number;
   nome: string;
-  responsavel?: string;
-  dataInicio: string;
-  dataTermino: string;
-  hhPlanejado: number;
-  hhReal: number;
-  dependenciaId?: string | null;
+  descricao: string;
+  status: ProjetoStatus;
+  data_inicio: string;
+  data_fim: string;
 }
 
-// ─── Custos ──────────────────────────────────────────────────────────────────
+// // ─── Custos ──────────────────────────────────────────────────────────────────
 
-export interface CustoAtividade {
-  atividadeId: string;
-  atividadeNome: string;
-  materialPlanejado: number;
-  materialReal: number;
-  hhPlanejado: number;
-  hhReal: number;
-  desvio: number; // percentual
-}
+// export interface CustoAtividade {
+//   atividadeId: string;
+//   atividadeNome: string;
+//   materialPlanejado: number;
+//   materialReal: number;
+//   hhPlanejado: number;
+//   hhReal: number;
+//   desvio: number; // percentual
+// }
