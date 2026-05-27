@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react'
 import { ChevronDown, ChevronRight, Plus, Trash2, TrendingDown } from 'lucide-react'
-import { useProjetos, useAtividades } from '@/hooks/useProjetos'
+import { useProjeto, useAtividades } from '@/hooks/useProjetos'
 import { useItens, useRecursos, useExcluirItem, useExcluirRecurso } from '@/hooks/useCustos'
 import AdicionarItemModal from '@/pages/components/AdicionarItemModal'
 import AdicionarRecursoModal from '@/pages/components/AdicionarRecursoModal'
@@ -203,7 +203,7 @@ function ProjetoAtividades({ projetoId, projetoNome }: { projetoId: string; proj
 }
 
 export default function CustosPage() {
-  const { data: projetos = [], isLoading } = useProjetos()
+  const { data: projetos = [], isLoading } = useProjeto()
   const [projetoFiltro, setProjetoFiltro] = useState<string>('todos')
 
   const projetosFiltrados = useMemo(

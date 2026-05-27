@@ -15,7 +15,7 @@ export const projetosService = {
   },
 
   criar: async (projeto: NovoProjeto): Promise<Projeto> => {
-    const { data } = await api.post('/projetos', projeto)
+    const { data } = await api.post('/projetos/criarProjetos', projeto)
     return data
   },
 
