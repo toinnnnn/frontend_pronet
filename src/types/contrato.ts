@@ -1,29 +1,26 @@
-export type ContratoStatus = 'ativo' | 'encerrado' | 'suspenso' | 'em_negociacao'
-export type ContratoTipo = 'obra' | 'servico' | 'fornecimento' | 'consultoria'
+export type ContratoStatus =
+  | 'ativo'
+  | 'encerrado'
+  | 'suspenso'
+  | 'em_negociacao'
 
 export interface Contrato {
-  id: string
-  numero: string
-  cliente: string
-  objeto: string
-  tipo: ContratoTipo
-  status: ContratoStatus
-  dataInicio: string
-  dataTermino: string
-  valorTotal: number
-  descricaoEscopo?: string
+  id: number
+  idCliente: number
+  escopo_contratual: string
+  valor_total: number
+  data_inicio: string
+  data_fim: string
+  status_contratual: ContratoStatus
   createdAt?: string
   updatedAt?: string
 }
 
 export interface NovoContrato {
-  numero: string
-  cliente: string
-  objeto: string
-  tipo: ContratoTipo
-  status: ContratoStatus
-  dataInicio: string
-  dataTermino: string
-  valorTotal: number
-  descricaoEscopo?: string
+  idCliente: number
+  escopo_contratual: string
+  valor_total: number
+  data_inicio: string
+  data_fim: string
+  status_contratual: ContratoStatus
 }

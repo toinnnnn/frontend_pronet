@@ -1,28 +1,37 @@
 import api from './api'
-import type { Contrato, NovoContrato } from '@/types/contrato'
+
+import type {
+  Contrato,
+  NovoContrato,
+} from '@/types/contrato'
 
 export const contratosService = {
   listar: async (): Promise<Contrato[]> => {
-    const { data } = await api.get('/contratos')
+    const { data } = await api.get(
+      '/contrato/listarContratos'
+    )
+
     return data
   },
 
-  buscarPorId: async (id: string): Promise<Contrato> => {
-    const { data } = await api.get(`/contratos/${id}`)
+  buscarPorId: async (
+    id: number
+  ): Promise<Contrato> => {
+    const { data } = await api.get(
+      `/contrato/${id}`
+    )
+
     return data
   },
 
-  criar: async (contrato: NovoContrato): Promise<Contrato> => {
-    const { data } = await api.post('/contratos', contrato)
-    return data
-  },
+  criar: async (
+    contrato: NovoContrato
+  ): Promise<Contrato> => {
+    const { data } = await api.post(
+      '/contrato/criarContrato',
+      contrato
+    )
 
-  atualizar: async (id: string, contrato: Partial<NovoContrato>): Promise<Contrato> => {
-    const { data } = await api.put(`/contratos/${id}`, contrato)
     return data
-  },
-
-  excluir: async (id: string): Promise<void> => {
-    await api.delete(`/contratos/${id}`)
   },
 }

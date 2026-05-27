@@ -1,20 +1,36 @@
 import { useForm } from 'react-hook-form'
+
 import { zodResolver } from '@hookform/resolvers/zod'
+
 import { z } from 'zod'
+
 import Modal from '@/components/ui/Modal'
+
 import { useCriarContrato } from '@/hooks/useContratos'
+
 import type { NovoContrato } from '@/types/contrato'
 
 const schema = z.object({
-  numero: z.string().min(1, 'Número é obrigatório'),
-  cliente: z.string().min(1, 'Cliente é obrigatório'),
-  objeto: z.string().min(1, 'Objeto é obrigatório'),
-  tipo: z.enum(['obra', 'servico', 'fornecimento', 'consultoria']),
-  status: z.enum(['ativo', 'encerrado', 'suspenso', 'em_negociacao']),
-  dataInicio: z.string().min(1, 'Data de início é obrigatória'),
-  dataTermino: z.string().min(1, 'Data de término é obrigatória'),
-  valorTotal: z.coerce.number().min(0),
-  descricaoEscopo: z.string().optional(),
+  idCliente: z.coerce
+    .number()
+    .min(1, 'Cliente obrigatório'),
+
+  escopo_contratual: z
+    .string()
+    .min(1, 'Escopo obrigatório'),
+
+  valor_total: z.coerce.number(),
+
+  data_inicio: z.string(),
+
+  data_fim: z.string(),
+
+  status_contratual: z.enum([
+    'ativo',
+    'encerrado',
+    'suspenso',
+    'em_negociacao',
+  ]),
 })
 
 type FormData = z.infer<typeof schema>
@@ -24,7 +40,10 @@ interface Props {
   onClose: () => void
 }
 
-export default function NovoContratoModal({ open, onClose }: Props) {
+export default function NovoContratoModal({
+  open,
+  onClose,
+}: Props) {
   const criarContrato = useCriarContrato()
 
   const {
@@ -34,126 +53,158 @@ export default function NovoContratoModal({ open, onClose }: Props) {
     formState: { errors, isSubmitting },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: { status: 'ativo', tipo: 'obra', valorTotal: 0 },
+
+    defaultValues: {
+      idCliente: 0,
+      escopo_contratual: '',
+      valor_total: 0,
+      data_inicio: '',
+      data_fim: '',
+      status_contratual: 'ativo',
+    },
   })
 
   const onSubmit = async (data: FormData) => {
-    await criarContrato.mutateAsync(data as NovoContrato)
+    await criarContrato.mutateAsync(
+      data as NovoContrato
+    )
+
     reset()
+
     onClose()
   }
 
   const handleClose = () => {
     reset()
+
     onClose()
   }
 
   return (
-    <Modal open={open} onClose={handleClose} title="Novo Contrato">
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">
-              Número do Contrato <span className="text-danger">*</span>
-            </label>
-            <input {...register('numero')} className="input-field" placeholder="Ex: 001/2026" />
-            {errors.numero && <p className="text-danger text-xs mt-1">{errors.numero.message}</p>}
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">
-              Cliente <span className="text-danger">*</span>
-            </label>
-            <input {...register('cliente')} className="input-field" placeholder="Ex: Pronet" />
-            {errors.cliente && <p className="text-danger text-xs mt-1">{errors.cliente.message}</p>}
-          </div>
-        </div>
-
+    <Modal
+      open={open}
+      onClose={handleClose}
+      title="Novo Contrato"
+    >
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-4"
+      >
         <div>
-          <label className="block text-sm font-medium text-text-primary mb-1">
-            Objeto do Contrato <span className="text-danger">*</span>
-          </label>
-          <textarea
-            {...register('objeto')}
-            rows={2}
-            className="input-field resize-none"
-            placeholder="Descreva o objeto do contrato..."
+          <label>ID Cliente</label>
+
+          <input
+            type="number"
+            {...register('idCliente')}
+            className="input-field"
           />
-          {errors.objeto && <p className="text-danger text-xs mt-1">{errors.objeto.message}</p>}
-        </div>
 
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">
-              Tipo <span className="text-danger">*</span>
-            </label>
-            <select {...register('tipo')} className="input-field">
-              <option value="obra">Obra</option>
-              <option value="servico">Serviço</option>
-              <option value="fornecimento">Fornecimento</option>
-              <option value="consultoria">Consultoria</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">Status</label>
-            <select {...register('status')} className="input-field">
-              <option value="ativo">Ativo</option>
-              <option value="em_negociacao">Em Negociação</option>
-              <option value="suspenso">Suspenso</option>
-              <option value="encerrado">Encerrado</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">
-              Data de Início <span className="text-danger">*</span>
-            </label>
-            <input type="date" {...register('dataInicio')} className="input-field" />
-            {errors.dataInicio && <p className="text-danger text-xs mt-1">{errors.dataInicio.message}</p>}
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-text-primary mb-1">
-              Data de Término <span className="text-danger">*</span>
-            </label>
-            <input type="date" {...register('dataTermino')} className="input-field" />
-            {errors.dataTermino && <p className="text-danger text-xs mt-1">{errors.dataTermino.message}</p>}
-          </div>
+          {errors.idCliente && (
+            <p className="text-danger text-xs">
+              {errors.idCliente.message}
+            </p>
+          )}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-text-primary mb-1">
-            Valor Total (R$) <span className="text-danger">*</span>
-          </label>
+          <label>Escopo Contratual</label>
+
+          <textarea
+            {...register('escopo_contratual')}
+            className="input-field"
+          />
+
+          {errors.escopo_contratual && (
+            <p className="text-danger text-xs">
+              {
+                errors.escopo_contratual
+                  .message
+              }
+            </p>
+          )}
+        </div>
+
+        <div>
+          <label>Valor Total</label>
+
           <input
             type="number"
             step="0.01"
-            min="0"
-            {...register('valorTotal')}
+            {...register('valor_total')}
             className="input-field"
-            placeholder="0,00"
           />
-          {errors.valorTotal && <p className="text-danger text-xs mt-1">{errors.valorTotal.message}</p>}
+
+          {errors.valor_total && (
+            <p className="text-danger text-xs">
+              {errors.valor_total.message}
+            </p>
+          )}
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label>Data Início</label>
+
+            <input
+              type="date"
+              {...register('data_inicio')}
+              className="input-field"
+            />
+          </div>
+
+          <div>
+            <label>Data Fim</label>
+
+            <input
+              type="date"
+              {...register('data_fim')}
+              className="input-field"
+            />
+          </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-text-primary mb-1">
-            Descrição do Escopo
-          </label>
-          <textarea
-            {...register('descricaoEscopo')}
-            rows={3}
-            className="input-field resize-none"
-            placeholder="Detalhamento do escopo contratual..."
-          />
+          <label>Status</label>
+
+          <select
+            {...register('status_contratual')}
+            className="input-field"
+          >
+            <option value="ativo">
+              Ativo
+            </option>
+
+            <option value="encerrado">
+              Encerrado
+            </option>
+
+            <option value="suspenso">
+              Suspenso
+            </option>
+
+            <option value="em_negociacao">
+              Em negociação
+            </option>
+          </select>
         </div>
 
-        <div className="flex justify-end gap-3 pt-2">
-          <button type="button" onClick={handleClose} className="btn-secondary">
+        <div className="flex justify-end gap-3">
+          <button
+            type="button"
+            onClick={handleClose}
+            className="btn-secondary"
+          >
             Cancelar
           </button>
-          <button type="submit" disabled={isSubmitting} className="btn-primary">
-            {isSubmitting ? 'Criando...' : 'Criar Contrato'}
+
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="btn-primary"
+          >
+            {isSubmitting
+              ? 'Criando...'
+              : 'Criar Contrato'}
           </button>
         </div>
       </form>
