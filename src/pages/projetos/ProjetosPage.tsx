@@ -56,12 +56,9 @@ export default function ProjetosPage() {
           <thead>
             <tr className="border-b border-border bg-gray-50/50">
               <th className="text-left px-5 py-3 table-header">Projeto</th>
-              <th className="text-left px-5 py-3 table-header">Cliente</th>
-              <th className="text-left px-5 py-3 table-header">Período</th>
-              <th className="text-left px-5 py-3 table-header">Custo Plan.</th>
-              <th className="text-left px-5 py-3 table-header w-36">
-                Progresso
-              </th>
+              <th className="text-left px-5 py-3 table-header">Data planejada</th>
+              <th className="text-left px-5 py-3 table-header">Data Real</th>
+              <th className="text-left px-5 py-3 table-header">Número do pedido.</th>
               <th className="text-left px-5 py-3 table-header">Status</th>
             </tr>
           </thead>
@@ -108,9 +105,6 @@ export default function ProjetosPage() {
                     </span>
                   </td>
                   <td className="px-5 py-3.5 text-sm text-text-secondary">
-                    {projeto.cliente}
-                  </td>
-                  <td className="px-5 py-3.5 text-sm text-text-secondary">
                     {formatDateRange(
                       projeto.data_inicio_planejada,
                       projeto.data_fim_planejada,
@@ -123,20 +117,7 @@ export default function ProjetosPage() {
                     )}
                   </td>
                   <td className="px-5 py-3.5 text-sm text-text-secondary font-mono">
-                    {projeto.ART}
-                  </td>
-                  <td className="px-5 py-3.5">
-                    <div className="flex items-center gap-2">
-                      <div className="flex-1 bg-gray-200 rounded-full h-1.5">
-                        <div
-                          className="bg-primary h-1.5 rounded-full transition-all"
-                          style={{ width: `${projeto.numero_pedido}%` }}
-                        />
-                      </div>
-                      <span className="text-xs text-text-secondary w-8">
-                        {projeto.numero_pedido}%
-                      </span>
-                    </div>
+                    {projeto.numero_pedido}
                   </td>
                   <td className="px-5 py-3.5">
                     <StatusBadge status={projeto.status} />
