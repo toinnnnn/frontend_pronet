@@ -1,13 +1,18 @@
-// services/marcos.service.ts
 import api from "./api";
 
 export interface Marco {
   id: number;
-  idProjeto: number;
-  nome: string;
+  data_prevista: string;
+  data_real: string;
   descricao?: string;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface NovoMarco {
+  data_prevista: string;
+  data_real: string;
+  descricao: string;
 }
 
 type ApiListResponse<T> = {
@@ -16,17 +21,24 @@ type ApiListResponse<T> = {
   nPages?: number;
 };
 
-export const marcosService = {
-  listar: async (projetoId: number | string): Promise<Marco[]> => {
-    const response = await api.get<ApiListResponse<Marco[]>>(
-      "/marcos/listarMarcos",
-      {
-        params: {
-          idProjeto: projetoId,
-        },
-      },
-    );
+type ApiResponse<T> = {
+  data: T;
+  message?: string;
+};
 
+export const marcosService = {
+  listar: async (): Promise<Marco[]> => {
+    const response = await api.get<ApiListResponse<Marco[]>>(
+      "/marco/listarMarco"
+    );
+    return response.data.data;
+  },
+
+  criar: async (marco: NovoMarco): Promise<Marco> => {
+    const response = await api.post<ApiResponse<Marco>>(
+      "/marco/criarMarco",
+      marco
+    );
     return response.data.data;
   },
 };

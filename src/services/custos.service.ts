@@ -1,58 +1,24 @@
 import api from './api'
-import type { ItemMaterial, NovoItemMaterial, RecursoHH, NovoRecursoHH } from '@/types/custo'
+import type { CustosAtividade, CustosProjeto, NovoMateriaisPlanejado, NovoPerfilPlanejado } from '@/types/custo'
+
+type ApiResponse<T> = { data: T }
 
 export const custosService = {
-  // Itens de Material
-  listarItens: async (projetoId: string, atividadeId: string): Promise<ItemMaterial[]> => {
-    const { data } = await api.get(`/projetos/${projetoId}/atividades/${atividadeId}/itens`)
-    return data
+  buscarPorAtividade: async (idAtividade: number | string): Promise<CustosAtividade> => {
+    const { data } = await api.get<ApiResponse<CustosAtividade>>(`/custos/atividade/${idAtividade}`)
+    return data.data
   },
 
-  criarItem: async (
-    projetoId: string,
-    atividadeId: string,
-    item: NovoItemMaterial
-  ): Promise<ItemMaterial> => {
-    const { data } = await api.post(
-      `/projetos/${projetoId}/atividades/${atividadeId}/itens`,
-      item
-    )
-    return data
+  buscarPorProjeto: async (idProjeto: number | string): Promise<CustosProjeto> => {
+    const { data } = await api.get<ApiResponse<CustosProjeto>>(`/custos/projeto/${idProjeto}`)
+    return data.data
   },
 
-  excluirItem: async (
-    projetoId: string,
-    atividadeId: string,
-    itemId: string
-  ): Promise<void> => {
-    await api.delete(`/projetos/${projetoId}/atividades/${atividadeId}/itens/${itemId}`)
+  adicionarMaterialPlanejado: async (idAtividade: number | string, dados: NovoMateriaisPlanejado): Promise<void> => {
+    await api.post(`/atividades/${idAtividade}/materiaisPlanejado`, dados)
   },
 
-  // Recursos Humanos (HH)
-  listarRecursos: async (projetoId: string, atividadeId: string): Promise<RecursoHH[]> => {
-    const { data } = await api.get(`/projetos/${projetoId}/atividades/${atividadeId}/recursos`)
-    return data
-  },
-
-  criarRecurso: async (
-    projetoId: string,
-    atividadeId: string,
-    recurso: NovoRecursoHH
-  ): Promise<RecursoHH> => {
-    const { data } = await api.post(
-      `/projetos/${projetoId}/atividades/${atividadeId}/recursos`,
-      recurso
-    )
-    return data
-  },
-
-  excluirRecurso: async (
-    projetoId: string,
-    atividadeId: string,
-    recursoId: string
-  ): Promise<void> => {
-    await api.delete(
-      `/projetos/${projetoId}/atividades/${atividadeId}/recursos/${recursoId}`
-    )
+  adicionarPerfilPlanejado: async (idAtividade: number | string, dados: NovoPerfilPlanejado): Promise<void> => {
+    await api.post(`/atividades/${idAtividade}/perfisPlanejado`, dados)
   },
 }

@@ -1,11 +1,20 @@
-// hooks/useMarcos.ts
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { marcosService } from "@/services/marcos.service";
+import type { NovoMarco } from "@/services/marcos.service";
 
-export function useMarcos(projetoId: number | string) {
+export function useMarcos() {
   return useQuery({
-    queryKey: ["marcos", projetoId],
-    queryFn: () => marcosService.listar(projetoId),
-    enabled: !!projetoId,
+    queryKey: ["marcos"],
+    queryFn: () => marcosService.listar(),
+  });
+}
+
+export function useCriarMarco() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (dados: NovoMarco) => marcosService.criar(dados),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["marcos"] });
+    },
   });
 }

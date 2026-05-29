@@ -1,58 +1,51 @@
-export interface ItemMaterial {
-  id: string
-  atividadeId: string
-  item: string
-  unidade: string
-  qtdPlanejada: number
-  custoUnitPlan: number
-  custoPlanTotal: number   // qtdPlanejada * custoUnitPlan
-  custoReal: number
-  variacao: number         // custoReal - custoPlanTotal
-  createdAt?: string
+// Resposta de GET /custos/atividade/:idAtividade
+export interface CustosAtividade {
+  idAtividade: number
+  idProjeto: number
+  nomeAtividade: string
+  custoPlanejado: {
+    materiais: number
+    maoDeObra: number
+    total: number
+  }
+  custoReal: {
+    materiais: number
+    maoDeObra: number
+    total: number
+  }
+  desvio: {
+    valor: number
+    percentual: number
+  }
 }
 
-export interface NovoItemMaterial {
-  item: string
-  unidade: string
-  qtdPlanejada: number
-  custoUnitPlan: number
-  custoReal: number
+// Resposta de GET /custos/projeto/:idProjeto
+export interface CustosProjeto {
+  idProjeto: number
+  custoPlanejado: {
+    materiais: number
+    maoDeObra: number
+    total: number
+  }
+  custoReal: {
+    materiais: number
+    maoDeObra: number
+    total: number
+  }
+  desvio: {
+    valor: number
+    percentual: number
+  }
 }
 
-export interface RecursoHH {
-  id: string
-  atividadeId: string
-  funcao: string
-  hhPlanejado: number
-  custoPlanHH: number      // custo unitário planejado por HH
-  hhReal: number
-  custoRealHH: number      // custo unitário real por HH
-  custoPlanTotal: number   // hhPlanejado * custoPlanHH
-  custoRealTotal: number   // hhReal * custoRealHH
-  variacao: number
-  createdAt?: string
+// Para adicionar material planejado
+export interface NovoMateriaisPlanejado {
+  idMaterial: number
+  quantidade_planejada: number
 }
 
-export interface NovoRecursoHH {
-  funcao: string
-  hhPlanejado: number
-  custoPlanHH: number
-  hhReal: number
-  custoRealHH: number
-}
-
-export interface ResumoAtividadeCusto {
-  atividadeId: string
-  atividadeNome: string
-  projetoNome: string
-  matPlan: number
-  matReal: number
-  hhPlanValor: number
-  hhRealValor: number
-  totalPlan: number
-  totalReal: number
-  variacao: number
-  variacaoPerc: number
-  itens: ItemMaterial[]
-  recursos: RecursoHH[]
+// Para adicionar perfil planejado (HH)
+export interface NovoPerfilPlanejado {
+  idPerfilColaborador: number
+  hh_planejada: number
 }
